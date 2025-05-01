@@ -6,12 +6,14 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <stdint.h>
 
 #include "debug.h"
 #include  "tim.h"
 #include "MFRC522.h"
 #include "schedule.h"
- #include "ringbuffer.h"
+#include "ringbuffer.h"
 #include  "usart.h"
+#include "esp8266.h"
 
 #endif

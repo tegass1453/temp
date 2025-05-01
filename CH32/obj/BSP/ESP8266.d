@@ -1,4 +1,4 @@
-User/main.o: ../User/main.c D:\project\CH32\test1\test1\BSP/bsp.h \
+BSP/ESP8266.o: ../BSP/ESP8266.c ../BSP/esp8266.h ../BSP/bsp.h \
  D:\project\CH32\test1\test1\Debug/debug.h \
  D:\project\CH32\test1\test1\Peripheral\inc/ch32v30x.h \
  D:\project\CH32\test1\test1\Core/core_riscv.h \
@@ -27,16 +27,12 @@ User/main.o: ../User/main.c D:\project\CH32\test1\test1\BSP/bsp.h \
  D:\project\CH32\test1\test1\Peripheral\inc/ch32v30x_usart.h \
  D:\project\CH32\test1\test1\Peripheral\inc/ch32v30x_wwdg.h \
  D:\project\CH32\test1\test1\User/ch32v30x_it.h \
- D:\project\CH32\test1\test1\Peripheral\inc/ch32v30x_misc.h \
- D:\project\CH32\test1\test1\BSP/tim.h \
- D:\project\CH32\test1\test1\BSP/bsp.h \
- D:\project\CH32\test1\test1\BSP/MFRC522.h \
- D:\project\CH32\test1\test1\BSP/schedule.h \
- D:\project\CH32\test1\test1\BSP/ringbuffer.h \
- D:\project\CH32\test1\test1\BSP/usart.h \
- D:\project\CH32\test1\test1\BSP/esp8266.h
+ D:\project\CH32\test1\test1\Peripheral\inc/ch32v30x_misc.h ../BSP/tim.h \
+ ../BSP/MFRC522.h ../BSP/schedule.h ../BSP/ringbuffer.h ../BSP/usart.h
 
-D:\project\CH32\test1\test1\BSP/bsp.h:
+../BSP/esp8266.h:
+
+../BSP/bsp.h:
 
 D:\project\CH32\test1\test1\Debug/debug.h:
 
@@ -96,16 +92,12 @@ D:\project\CH32\test1\test1\User/ch32v30x_it.h:
 
 D:\project\CH32\test1\test1\Peripheral\inc/ch32v30x_misc.h:
 
-D:\project\CH32\test1\test1\BSP/tim.h:
+../BSP/tim.h:
 
-D:\project\CH32\test1\test1\BSP/bsp.h:
+../BSP/MFRC522.h:
 
-D:\project\CH32\test1\test1\BSP/MFRC522.h:
+../BSP/schedule.h:
 
-D:\project\CH32\test1\test1\BSP/schedule.h:
+../BSP/ringbuffer.h:
 
-D:\project\CH32\test1\test1\BSP/ringbuffer.h:
-
-D:\project\CH32\test1\test1\BSP/usart.h:
-
-D:\project\CH32\test1\test1\BSP/esp8266.h:
+../BSP/usart.h:

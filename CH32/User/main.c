@@ -50,7 +50,10 @@ int main(void)
 	USART2_Init(115200);
     MFRC522_Init();
     TIM2_init();
+    USART4_Init(115200);
     schedule_init();
+
+
 
 
   while (1)

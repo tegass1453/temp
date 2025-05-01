@@ -5,21 +5,27 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../BSP/ESP8266.c \
 ../BSP/MFRC522.c \
+../BSP/SD.c \
 ../BSP/ringbuffer.c \
 ../BSP/schedule.c \
 ../BSP/tim.c \
 ../BSP/usart.c 
 
 OBJS += \
+./BSP/ESP8266.o \
 ./BSP/MFRC522.o \
+./BSP/SD.o \
 ./BSP/ringbuffer.o \
 ./BSP/schedule.o \
 ./BSP/tim.o \
 ./BSP/usart.o 
 
 C_DEPS += \
+./BSP/ESP8266.d \
 ./BSP/MFRC522.d \
+./BSP/SD.d \
 ./BSP/ringbuffer.d \
 ./BSP/schedule.d \
 ./BSP/tim.d \

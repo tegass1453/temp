@@ -28,7 +28,8 @@ BSP/tim.o: ../BSP/tim.c ../BSP/tim.h ../BSP/bsp.h \
  D:\project\CH32\test1\test1\Peripheral\inc/ch32v30x_wwdg.h \
  D:\project\CH32\test1\test1\User/ch32v30x_it.h \
  D:\project\CH32\test1\test1\Peripheral\inc/ch32v30x_misc.h \
- ../BSP/MFRC522.h ../BSP/schedule.h ../BSP/ringbuffer.h ../BSP/usart.h
+ ../BSP/MFRC522.h ../BSP/schedule.h ../BSP/ringbuffer.h ../BSP/usart.h \
+ ../BSP/esp8266.h
 
 ../BSP/tim.h:
 
@@ -99,3 +100,5 @@ D:\project\CH32\test1\test1\Peripheral\inc/ch32v30x_misc.h:
 ../BSP/ringbuffer.h:
 
 ../BSP/usart.h:
+
+../BSP/esp8266.h:

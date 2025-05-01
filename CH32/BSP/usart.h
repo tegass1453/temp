@@ -7,8 +7,27 @@
 
 void USART2_Init(uint32_t baudrate);
 void USART2_IRQHandler(void);
-void DMA1_Channel7_IRQHandler(void);
-void uart_proc(void);
 void uart2_printf(const uint8_t*fomat,...);
 void USART2_DMA_SendBuff(uint8_t *buf, uint8_t len);
+
+void USART3_Init(uint32_t baudrate);
+void USART3_DMA_SendBuff(uint8_t *buf, uint8_t len);
+void uart3_printf(const uint8_t *format, ...);
+void USART3_IRQHandler(void);
+
+void USART4_Init(uint32_t baudrate);
+void USART4_DMA_SendBuff(uint8_t *buf, uint8_t len);
+void uart4_printf(const uint8_t *format, ...);
+void USART4_IRQHandler(void);
+
+void UART6_Init(uint32_t baudrate);
+void UART6_DMA_SendBuff(uint8_t *buf, uint8_t len);
+void uart6_printf(const char *format, ...);
+void UART6_IRQHandler(void);
+
+
+void uart_proc(void);
+
+
+
 #endif /* USART_H_ */
