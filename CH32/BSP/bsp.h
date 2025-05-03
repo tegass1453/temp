@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <stdint.h>
 
 #include "debug.h"
 #include  "tim.h"

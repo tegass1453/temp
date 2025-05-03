@@ -1,5 +1,11 @@
 #include "usart.h"
 
+
+void UART4_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+void USART2_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+void USART3_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+void UART6_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+
 /* 全局变量和宏定义 */
 // USART处理标志位
 #define USER_UART_PROC 0X01    // 接收数据处理标志
@@ -165,7 +171,7 @@ void uart2_printf(const uint8_t *format, ...)
   * @retval 无
   * @note   处理USART2空闲中断，将DMA接收数据存入环形缓冲区
   */
-void USART2_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+
 void USART2_IRQHandler(void)
 {
     if (USART_GetITStatus(USART2, USART_IT_IDLE) == SET) // 检测到空闲中断
@@ -348,7 +354,7 @@ void uart3_printf(const uint8_t *format, ...)
 /**
   * @brief  USART3中断服务函数
   */
-void USART3_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+
 void USART3_IRQHandler(void)
 {
     if (USART_GetITStatus(USART3, USART_IT_IDLE) == SET)
@@ -484,7 +490,7 @@ void USART4_DMA_SendBuff(uint8_t *buf, uint8_t len)
 //----------------------------------------------------------
 // ⚠️ 关键修改点3：中断服务函数DMA通道调整
 //----------------------------------------------------------
-void UART4_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+
 void UART4_IRQHandler(void)
 {
     if (USART_GetITStatus(UART4, USART_IT_IDLE) == SET)
@@ -639,7 +645,7 @@ void UART6_DMA_SendBuff(uint8_t *buf, uint8_t len)
 //----------------------------------------------------------
 // 关键配置3：中断服务函数（处理空闲中断）
 //----------------------------------------------------------
-void UART6_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+
 void UART6_IRQHandler(void)
 {
     if (USART_GetITStatus(UART6, USART_IT_IDLE) == SET)
@@ -714,6 +720,8 @@ void uart_proc(void)
 
            uint8_t uart4_rb[UART4_RX_BUFFER_SIZE] = {0};
            ringbuffer_read(&uart4_ringbuffer, uart4_rb, uart4_ringbuffer.itemCount);
+
+           uart4_printf("%s",uart4_rb);
 
 
        }

@@ -16,6 +16,8 @@
 #define 	MAXRLEN 18
 #define   RC522_DELAY()  Delay_Us(2)
 
+#define timeout(time_old,freq) (((TIM2_GetTick()>=time_old+freq)?1:0)&&(time_old=TIM2_GetTick()||1))
+#define Timeout(time_old,freq) (!timeout(time_old,freq))
 
 void MFRC522_Init(void)
 {
@@ -64,6 +66,10 @@ void MFRC522_Init(void)
 
     // 6. 片选默认拉高
     MFRC522_SDA_H;
+
+
+
+
 }
 
 // 向MFRC522读一个寄存器
@@ -71,6 +77,7 @@ unsigned char Read_MFRC522(unsigned char Address)
 {
     unsigned char ucAddr;
     unsigned char ucResult;
+    uint32_t time=TIM2_GetTick();
 
     ucAddr = ((Address << 1) & 0x7E) | 0x80; // 构造读命令
 
@@ -78,14 +85,14 @@ unsigned char Read_MFRC522(unsigned char Address)
 
     // 发送寄存器地址
     SPI_I2S_SendData(SPI1, ucAddr);
-    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
-    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET&&Timeout(time,1000));
+    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET&&Timeout(time,1000));
     (void)SPI_I2S_ReceiveData(SPI1); // 读出无效数据，清除接收缓冲
 
     // 发送空数据读取真正返回值
     SPI_I2S_SendData(SPI1, 0x00);
-    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
-    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET&&Timeout(time,1000));
+    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET&&Timeout(time,1000));
     ucResult = SPI_I2S_ReceiveData(SPI1);
 
     MFRC522_SDA_H; // 拉高片选，结束通信
@@ -97,21 +104,21 @@ unsigned char Read_MFRC522(unsigned char Address)
 void Write_MFRC522(unsigned char Address, unsigned char value)
 {
     unsigned char ucAddr;
-
+    uint32_t time=TIM2_GetTick();
     ucAddr = (Address << 1) & 0x7E; // 构造写命令
 
     MFRC522_SDA_L; // 拉低片选，开始通信
 
     // 发送寄存器地址
     SPI_I2S_SendData(SPI1, ucAddr);
-    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
-    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET&&Timeout(time,1000));
+    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET&&Timeout(time,1000));
     (void)SPI_I2S_ReceiveData(SPI1);
 
     // 发送要写的数据
     SPI_I2S_SendData(SPI1, value);
-    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
-    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET&&Timeout(time,1000));
+    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET&&Timeout(time,1000));
     (void)SPI_I2S_ReceiveData(SPI1);
 
     MFRC522_SDA_H; // 拉高片选，结束通信
@@ -124,6 +131,7 @@ void Write_MFRC522(unsigned char Address, unsigned char value)
 /////////////////////////////////////////////////////////////////////
 char MFRC522_Reset(void) 
 {
+    uint32_t time=TIM2_GetTick();
 	//unsigned char i;
     MFRC522_RST_H;
         Delay_Us (1);
@@ -134,7 +142,7 @@ char MFRC522_Reset(void)
 
     //MFRC522_RST_H;
     Write_MFRC522(CommandReg,0x0F); //soft reset
-    while(Read_MFRC522(CommandReg) & 0x10); //wait chip start ok
+    while((Read_MFRC522(CommandReg) & 0x10)&&Timeout(time,1000)); //wait chip start ok
 
     Delay_Us(1);
 

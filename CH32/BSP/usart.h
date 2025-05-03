@@ -18,7 +18,7 @@ void USART3_IRQHandler(void);
 void USART4_Init(uint32_t baudrate);
 void USART4_DMA_SendBuff(uint8_t *buf, uint8_t len);
 void uart4_printf(const uint8_t *format, ...);
-void USART4_IRQHandler(void);
+void UART4_IRQHandler(void);
 
 void UART6_Init(uint32_t baudrate);
 void UART6_DMA_SendBuff(uint8_t *buf, uint8_t len);

@@ -54,7 +54,7 @@ all: test1.elf secondary-outputs
 
 # 工具调用
 test1.elf: $(OBJS) $(USER_OBJS)
-	@	@	riscv-none-embed-gcc -march=rv32imacxw -mabi=ilp32 -msmall-data-limit=8 -msave-restore -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common -Wunused -Wuninitialized  -g -T "D:\project\CH32\test1\test1\Ld\Link.ld" -nostartfiles -Xlinker --gc-sections -Wl,-Map,"test1.map" --specs=nano.specs --specs=nosys.specs -o "test1.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	@	@	riscv-none-embed-gcc -march=rv32imacxw -mabi=ilp32 -msmall-data-limit=8 -msave-restore -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common -Wunused -Wuninitialized  -g -T "D:\project\CH32\repository\CH32\Ld\Link.ld" -nostartfiles -Xlinker --gc-sections -Wl,-Map,"test1.map" --specs=nano.specs --specs=nosys.specs -o "test1.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@	@
 test1.hex: test1.elf
 	@	riscv-none-embed-objcopy -O ihex "test1.elf"  "test1.hex"
