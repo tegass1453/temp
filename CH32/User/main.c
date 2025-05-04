@@ -44,6 +44,8 @@ int main(void)
 	SystemCoreClockUpdate();
 	Delay_Init();
 	USART_Printf_Init(115200);	
+	RTC_Init(40000-1);
+	RTC_SetTime(&rtc_time);
 	printf("SystemClk:%d\r\n",SystemCoreClock);
 	printf( "ChipID:%08x\r\n", DBGMCU_GetCHIPID() );
 	printf("This is printf example\r\n");
@@ -51,17 +53,14 @@ int main(void)
     MFRC522_Init();
     TIM2_init();
     USART4_Init(115200);
-    schedule_init();
 
+    schedule_init();
 
 
 
   while (1)
   {
-
       schedule_proc();
-
-
 
   }
 }

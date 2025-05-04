@@ -1,4 +1,4 @@
-BSP/ESP8266.o: ../BSP/ESP8266.c ../BSP/esp8266.h ../BSP/bsp.h \
+BSP/ESP8266.o: ../BSP/ESP8266.c ../BSP/ESP8266.h ../BSP/bsp.h \
  D:\project\CH32\repository\CH32\Debug/debug.h \
  D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x.h \
  D:\project\CH32\repository\CH32\Core/core_riscv.h \
@@ -29,9 +29,9 @@ BSP/ESP8266.o: ../BSP/ESP8266.c ../BSP/esp8266.h ../BSP/bsp.h \
  D:\project\CH32\repository\CH32\User/ch32v30x_it.h \
  D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x_misc.h \
  ../BSP/tim.h ../BSP/MFRC522.h ../BSP/schedule.h ../BSP/ringbuffer.h \
- ../BSP/usart.h
+ ../BSP/usart.h ../BSP/Relay.h ../BSP/RTC.h
 
-../BSP/esp8266.h:
+../BSP/ESP8266.h:
 
 ../BSP/bsp.h:
 
@@ -102,3 +102,7 @@ D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x_misc.h:
 ../BSP/ringbuffer.h:
 
 ../BSP/usart.h:
+
+../BSP/Relay.h:
+
+../BSP/RTC.h:

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdint.h>
-#include <stdint.h>
+#include <time.h>
 
 #include "debug.h"
 #include  "tim.h"
@@ -15,6 +15,10 @@
 #include "schedule.h"
 #include "ringbuffer.h"
 #include  "usart.h"
-#include "esp8266.h"
+#include "Relay.h"
+#include "ESP8266.h"
+#include "RTC.h"
+
+extern struct tm rtc_time;
 
 #endif

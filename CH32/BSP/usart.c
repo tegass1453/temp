@@ -377,8 +377,8 @@ void USART3_IRQHandler(void)
 
 
 
-#define UART4_RX_BUFFER_SIZE 256
-#define UART4_TX_BUFFER_SIZE 256
+#define UART4_RX_BUFFER_SIZE 512
+#define UART4_TX_BUFFER_SIZE 512
 
 // ⚠️ 修改为DMA2通道
 uint8_t uart4_rx_buffer[UART4_RX_BUFFER_SIZE];
@@ -519,7 +519,7 @@ void uart4_printf(const uint8_t *format, ...)
 {
     while(USART_GetFlagStatus(UART4, USART_FLAG_TXE) == RESET);
 
-    char buffer[128];
+    char buffer[512];
     va_list arg;
     va_start(arg, format);
     vsnprintf(buffer, sizeof(buffer), format, arg);
@@ -692,6 +692,7 @@ void uart6_printf(const char *format, ...)
 
 void uart_proc(void)
 {
+
     if (uart2_flag & USER_UART_PROC) // 检查数据处理标志
     {
         uart2_flag &= (~USER_UART_PROC); // 清除标志位

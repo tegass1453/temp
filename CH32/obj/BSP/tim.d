@@ -29,7 +29,7 @@ BSP/tim.o: ../BSP/tim.c ../BSP/tim.h ../BSP/bsp.h \
  D:\project\CH32\repository\CH32\User/ch32v30x_it.h \
  D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x_misc.h \
  ../BSP/MFRC522.h ../BSP/schedule.h ../BSP/ringbuffer.h ../BSP/usart.h \
- ../BSP/esp8266.h
+ ../BSP/Relay.h ../BSP/ESP8266.h ../BSP/RTC.h
 
 ../BSP/tim.h:
 
@@ -101,4 +101,8 @@ D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x_misc.h:
 
 ../BSP/usart.h:
 
-../BSP/esp8266.h:
+../BSP/Relay.h:
+
+../BSP/ESP8266.h:
+
+../BSP/RTC.h:

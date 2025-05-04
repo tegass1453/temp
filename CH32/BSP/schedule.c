@@ -6,6 +6,7 @@ uint32_t Task_num;
 Task system_array[]={
    {MFRC522_Proc,0,500},
    {uart_proc,0,10},
+   {RTC_proc,0,2000},
 
 };
 
