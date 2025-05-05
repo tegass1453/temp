@@ -702,7 +702,7 @@ void uart_proc(void)
 
         /* 数据解析区域(需用户完善) */
         // 示例: 处理uart2_rb中的数据...
-        uart2_printf("%s",uart2_rb);
+
     }
     if (uart3_flag & USER_UART_PROC)
         {
@@ -722,7 +722,6 @@ void uart_proc(void)
            uint8_t uart4_rb[UART4_RX_BUFFER_SIZE] = {0};
            ringbuffer_read(&uart4_ringbuffer, uart4_rb, uart4_ringbuffer.itemCount);
 
-           uart4_printf("%s",uart4_rb);
 
 
        }

@@ -14,7 +14,8 @@
 
 
 uint8_t ESP8266_Init(void);
-
-
+void ESP8266_setenable(uint8_t flag);
+void ESP8266_setpassword(uint8_t* string,uint8_t size);
+void ESP8266_settime(void);
 
 #endif

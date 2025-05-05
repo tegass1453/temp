@@ -1,4 +1,4 @@
-User/main.o: ../User/main.c D:\project\CH32\repository\CH32\BSP/bsp.h \
+BSP/seg.o: ../BSP/seg.c ../BSP/seg.h ../BSP/bsp.h \
  D:\project\CH32\repository\CH32\Debug/debug.h \
  D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x.h \
  D:\project\CH32\repository\CH32\Core/core_riscv.h \
@@ -28,19 +28,13 @@ User/main.o: ../User/main.c D:\project\CH32\repository\CH32\BSP/bsp.h \
  D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x_wwdg.h \
  D:\project\CH32\repository\CH32\User/ch32v30x_it.h \
  D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x_misc.h \
- D:\project\CH32\repository\CH32\BSP/tim.h \
- D:\project\CH32\repository\CH32\BSP/bsp.h \
- D:\project\CH32\repository\CH32\BSP/MFRC522.h \
- D:\project\CH32\repository\CH32\BSP/schedule.h \
- D:\project\CH32\repository\CH32\BSP/ringbuffer.h \
- D:\project\CH32\repository\CH32\BSP/usart.h \
- D:\project\CH32\repository\CH32\BSP/Relay.h \
- D:\project\CH32\repository\CH32\BSP/ESP8266.h \
- D:\project\CH32\repository\CH32\BSP/RTC.h \
- D:\project\CH32\repository\CH32\BSP/seg.h \
- D:\project\CH32\repository\CH32\BSP/finger.h
+ ../BSP/tim.h ../BSP/MFRC522.h ../BSP/schedule.h ../BSP/ringbuffer.h \
+ ../BSP/usart.h ../BSP/Relay.h ../BSP/ESP8266.h ../BSP/RTC.h \
+ ../BSP/finger.h
 
-D:\project\CH32\repository\CH32\BSP/bsp.h:
+../BSP/seg.h:
+
+../BSP/bsp.h:
 
 D:\project\CH32\repository\CH32\Debug/debug.h:
 
@@ -100,24 +94,20 @@ D:\project\CH32\repository\CH32\User/ch32v30x_it.h:
 
 D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x_misc.h:
 
-D:\project\CH32\repository\CH32\BSP/tim.h:
+../BSP/tim.h:
 
-D:\project\CH32\repository\CH32\BSP/bsp.h:
+../BSP/MFRC522.h:
 
-D:\project\CH32\repository\CH32\BSP/MFRC522.h:
+../BSP/schedule.h:
 
-D:\project\CH32\repository\CH32\BSP/schedule.h:
+../BSP/ringbuffer.h:
 
-D:\project\CH32\repository\CH32\BSP/ringbuffer.h:
+../BSP/usart.h:
 
-D:\project\CH32\repository\CH32\BSP/usart.h:
+../BSP/Relay.h:
 
-D:\project\CH32\repository\CH32\BSP/Relay.h:
+../BSP/ESP8266.h:
 
-D:\project\CH32\repository\CH32\BSP/ESP8266.h:
+../BSP/RTC.h:
 
-D:\project\CH32\repository\CH32\BSP/RTC.h:
-
-D:\project\CH32\repository\CH32\BSP/seg.h:
-
-D:\project\CH32\repository\CH32\BSP/finger.h:
+../BSP/finger.h:

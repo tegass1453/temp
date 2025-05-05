@@ -18,7 +18,10 @@
 #include "Relay.h"
 #include "ESP8266.h"
 #include "RTC.h"
+#include "seg.h"
+#include "finger.h"
 
 extern struct tm rtc_time;
-
+extern uint8_t password[10];
+extern time_t time_count;
 #endif

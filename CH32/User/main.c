@@ -57,11 +57,11 @@ int main(void)
     schedule_init();
 
 
-
   while (1)
   {
-      schedule_proc();
 
+      schedule_proc();
+      ESP8266_settime();
   }
 }
 

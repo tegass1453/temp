@@ -1,8 +1,8 @@
 /* RTC.c */
 #include "RTC.h"
 
-
 struct tm rtc_time={0};
+time_t time_count;
 /**
   * @brief  RTC初始化
   * @param  prescaler: 预分频值（根据时钟源计算）
@@ -115,13 +115,6 @@ void RTC_proc(void)
 {
 
     RTC_GetTime(&rtc_time);
-    uart4_printf("Date: %04d-%02d-%02d %02d:%02d:%02d",
-           rtc_time.tm_year,
-           rtc_time.tm_mon,
-           rtc_time.tm_mday,
-           rtc_time.tm_hour,
-           rtc_time.tm_min,
-           rtc_time.tm_sec);
-
+    time_count=mktime(&rtc_time);
 
 }

@@ -29,7 +29,8 @@ BSP/schedule.o: ../BSP/schedule.c ../BSP/schedule.h ../BSP/bsp.h \
  D:\project\CH32\repository\CH32\User/ch32v30x_it.h \
  D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x_misc.h \
  ../BSP/tim.h ../BSP/MFRC522.h ../BSP/ringbuffer.h ../BSP/usart.h \
- ../BSP/Relay.h ../BSP/ESP8266.h ../BSP/RTC.h
+ ../BSP/Relay.h ../BSP/ESP8266.h ../BSP/RTC.h ../BSP/seg.h \
+ ../BSP/finger.h
 
 ../BSP/schedule.h:
 
@@ -106,3 +107,7 @@ D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x_misc.h:
 ../BSP/ESP8266.h:
 
 ../BSP/RTC.h:
+
+../BSP/seg.h:
+
+../BSP/finger.h:
