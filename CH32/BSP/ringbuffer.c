@@ -48,6 +48,7 @@ int8_t ringbuffer_write(ringbuffer_t *rb, uint8_t *data, uint32_t num)
 int8_t ringbuffer_read(ringbuffer_t *rb, uint8_t *data, uint32_t num)
 {
 
+    uint8_t temp=0;
     if(ringbuffer_is_empty(rb))
         return -1;
     
@@ -57,6 +58,7 @@ int8_t ringbuffer_read(ringbuffer_t *rb, uint8_t *data, uint32_t num)
         *data++ = rb->buffer[rb->r];
         rb->r = (rb->r + 1) % rb->buffer_size;
         rb->itemCount--;
+        temp++;
     }
-    return 0;
+    return temp;
 }

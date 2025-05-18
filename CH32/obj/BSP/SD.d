@@ -30,7 +30,7 @@ BSP/SD.o: ../BSP/SD.c ../BSP/SD.h ../BSP/bsp.h \
  D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x_misc.h \
  ../BSP/tim.h ../BSP/MFRC522.h ../BSP/schedule.h ../BSP/ringbuffer.h \
  ../BSP/usart.h ../BSP/Relay.h ../BSP/ESP8266.h ../BSP/RTC.h ../BSP/seg.h \
- ../BSP/finger.h
+ ../BSP/finger.h ../BSP/parse.h
 
 ../BSP/SD.h:
 
@@ -113,3 +113,5 @@ D:\project\CH32\repository\CH32\Peripheral\inc/ch32v30x_misc.h:
 ../BSP/seg.h:
 
 ../BSP/finger.h:
+
+../BSP/parse.h:

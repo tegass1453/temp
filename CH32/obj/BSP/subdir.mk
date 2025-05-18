@@ -11,6 +11,7 @@ C_SRCS += \
 ../BSP/Relay.c \
 ../BSP/SD.c \
 ../BSP/finger.c \
+../BSP/parse.c \
 ../BSP/ringbuffer.c \
 ../BSP/schedule.c \
 ../BSP/seg.c \
@@ -24,6 +25,7 @@ OBJS += \
 ./BSP/Relay.o \
 ./BSP/SD.o \
 ./BSP/finger.o \
+./BSP/parse.o \
 ./BSP/ringbuffer.o \
 ./BSP/schedule.o \
 ./BSP/seg.o \
@@ -37,6 +39,7 @@ C_DEPS += \
 ./BSP/Relay.d \
 ./BSP/SD.d \
 ./BSP/finger.d \
+./BSP/parse.d \
 ./BSP/ringbuffer.d \
 ./BSP/schedule.d \
 ./BSP/seg.d \

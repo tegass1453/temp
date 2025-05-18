@@ -6,6 +6,11 @@ void USART2_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void USART3_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void UART6_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
+
+
+extern const UART_CmdHandler uart2_cmd;
+extern UART_Parser uart2_parser;
+
 /* 全局变量和宏定义 */
 // USART处理标志位
 #define USER_UART_PROC 0X01    // 接收数据处理标志
@@ -697,11 +702,14 @@ void uart_proc(void)
     {
         uart2_flag &= (~USER_UART_PROC); // 清除标志位
 
+        uint8_t len=0;
         uint8_t uart2_rb[UART2_RX_BUFFER_SIZE] = {0};
-        ringbuffer_read(&uart2_ringbuffer, uart2_rb, uart2_ringbuffer.itemCount); // 读取环形缓冲区数据
+        len=ringbuffer_read(&uart2_ringbuffer, uart2_rb, MAX_DATA_LEN+3); // 读取环形缓冲区数据
 
         /* 数据解析区域(需用户完善) */
         // 示例: 处理uart2_rb中的数据...
+        Parser_Process(&uart2_parser,uart2_rb,len);
+
 
     }
     if (uart3_flag & USER_UART_PROC)
