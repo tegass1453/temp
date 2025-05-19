@@ -53,6 +53,7 @@ int main(void)
     MFRC522_Init();
     TIM2_init();
     USART4_Init(115200);
+    UART6_Init(57600);
 
     schedule_init();
 
@@ -61,7 +62,6 @@ int main(void)
   {
 
       schedule_proc();
-      ESP8266_settime();
   }
 }
 

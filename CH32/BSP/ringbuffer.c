@@ -34,7 +34,7 @@ int8_t ringbuffer_write(ringbuffer_t *rb, uint8_t *data, uint32_t num)
         return -1;
         
 
-    while(num--)
+    while(num--&&rb->itemCount<rb->buffer_size)
     {
         rb->buffer[rb->w] = *data++;
         rb->w = (rb->w + 1) % rb->buffer_size;
@@ -53,7 +53,7 @@ int8_t ringbuffer_read(ringbuffer_t *rb, uint8_t *data, uint32_t num)
         return -1;
     
 
-    while(num--)
+    while(num--&&rb->itemCount!=0)
     {
         *data++ = rb->buffer[rb->r];
         rb->r = (rb->r + 1) % rb->buffer_size;

@@ -6,17 +6,29 @@ void USART2_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void USART3_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void UART6_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 
-
-
+/* 外部声明 UART2 解析器 */
 extern const UART_CmdHandler uart2_cmd;
 extern UART_Parser uart2_parser;
+
+/* 外部声明 UART3 解析器 */
+extern const UART_CmdHandler uart3_cmd;
+extern UART_Parser uart3_parser;
+
+/* 外部声明 UART4 解析器 */
+extern const UART_CmdHandler uart4_cmd;
+extern UART_Parser uart4_parser;
+
+/* 外部声明 UART6 解析器 */
+extern const UART_CmdHandler uart6_cmd;
+extern UART_Parser uart6_parser;
+
 
 /* 全局变量和宏定义 */
 // USART处理标志位
 #define USER_UART_PROC 0X01    // 接收数据处理标志
 #define USER_UART_FULL 0X02    // 接收缓冲区满标志(当前代码未使用)
-#define UART2_RX_BUFFER_SIZE 256 // 接收缓冲区大小
-#define UART2_TX_BUFFER_SIZE 256 // 发送缓冲区大小
+#define UART2_RX_BUFFER_SIZE 512 // 接收缓冲区大小
+#define UART2_TX_BUFFER_SIZE 128 // 发送缓冲区大小
 
 DMA_InitTypeDef UART2_DMA_InitStruct;        // DMA初始化结构体
 uint8_t uart2_rx_buffer[UART2_RX_BUFFER_SIZE]; // USART2 DMA接收缓冲区
@@ -697,12 +709,12 @@ void uart6_printf(const char *format, ...)
 
 void uart_proc(void)
 {
-
+    uint8_t len=0;
     if (uart2_flag & USER_UART_PROC) // 检查数据处理标志
     {
         uart2_flag &= (~USER_UART_PROC); // 清除标志位
 
-        uint8_t len=0;
+
         uint8_t uart2_rb[UART2_RX_BUFFER_SIZE] = {0};
         len=ringbuffer_read(&uart2_ringbuffer, uart2_rb, MAX_DATA_LEN+3); // 读取环形缓冲区数据
 
@@ -717,10 +729,12 @@ void uart_proc(void)
             uart3_flag &= (~USER_UART_PROC);
 
             uint8_t uart3_rb[UART3_RX_BUFFER_SIZE] = {0};
-            ringbuffer_read(&uart3_ringbuffer, uart3_rb, uart3_ringbuffer.itemCount);
+            len=ringbuffer_read(&uart3_ringbuffer, uart3_rb, uart3_ringbuffer.itemCount);
 
             /* 用户数据处理区域 */
             // 示例：回传接收数据
+
+            Parser_Process(&uart3_parser,uart3_rb,len);
 
         }
     if (uart4_flag & USER_UART_PROC)
@@ -728,9 +742,9 @@ void uart_proc(void)
            uart4_flag &= (~USER_UART_PROC);
 
            uint8_t uart4_rb[UART4_RX_BUFFER_SIZE] = {0};
-           ringbuffer_read(&uart4_ringbuffer, uart4_rb, uart4_ringbuffer.itemCount);
+           len=ringbuffer_read(&uart4_ringbuffer, uart4_rb, uart4_ringbuffer.itemCount);
 
-
+           Parser_Process(&uart4_parser,uart4_rb,len);
 
        }
     if (uart6_flag & USER_UART_PROC)
@@ -738,7 +752,8 @@ void uart_proc(void)
            uart6_flag &= ~USER_UART_PROC;
 
            uint8_t uart6_rb[UART6_RX_BUFFER_SIZE] = {0};
-           ringbuffer_read(&uart6_ringbuffer, uart6_rb, uart6_ringbuffer.itemCount);
+           len=ringbuffer_read(&uart6_ringbuffer, uart6_rb, uart6_ringbuffer.itemCount);
 
+           Parser_Process(&uart6_parser,uart6_rb,len);
        }
 }

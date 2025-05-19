@@ -2,27 +2,16 @@
 
 
 
-
-
-
-
+/*--------------------- UART2 配置 ---------------------*/
 void set_password(uint8_t* data,uint8_t data_len){
     while(data_len--)
     {
         uart2_printf("%C",*data++);
     }
 }
-void set_password1(uint8_t* data,uint8_t data_len){
-    data+=data_len-1;
-    while(data_len--)
-    {
-        uart2_printf("%C",*data--);
-    }
-}
 
 const UART_CmdHandler uart2_cmd[] = {
         {0x01,set_password},
-        {0x02,set_password1},
 };
 UART_Parser uart2_parser={
         .head=0XAA,
@@ -32,6 +21,69 @@ UART_Parser uart2_parser={
         .state=PARSE_WAIT_HEADER
 
 };
+
+/*--------------------- UART3 配置 ---------------------*/
+void set_password3(uint8_t* data, uint8_t data_len) {
+    while(data_len--) {
+        uart3_printf("%C", *data++);  // 使用 UART3 的打印函数
+    }
+}
+
+const UART_CmdHandler uart3_cmd[] = {
+    {0x01, set_password3},  // 命令 ID 和对应的处理函数
+};
+
+UART_Parser uart3_parser = {
+    .head = 0XAA,  // 帧头（与 UART2 相同，可根据需求修改）
+    .tail = 0XA7,  // 帧尾
+    .cmds = uart3_cmd,
+    .cmd_count = sizeof(uart3_cmd)/sizeof(uart3_cmd[0]),
+    .state = PARSE_WAIT_HEADER
+};
+
+/*--------------------- UART4 配置 ---------------------*/
+void set_password4(uint8_t* data, uint8_t data_len) {
+    while(data_len--) {
+        uart4_printf("%C", *data++);  // 使用 UART4 的打印函数
+    }
+}
+
+const UART_CmdHandler uart4_cmd[] = {
+    {0x01, set_password4},  // 命令 ID 可自定义
+};
+
+UART_Parser uart4_parser = {
+    .head = 0XAA,
+    .tail = 0XA7,
+    .cmds = uart4_cmd,
+    .cmd_count = sizeof(uart4_cmd)/sizeof(uart4_cmd[0]),
+    .state = PARSE_WAIT_HEADER
+};
+
+/*--------------------- UART6 配置 ---------------------*/
+void set_password6(uint8_t* data, uint8_t data_len) {
+    while(data_len--) {
+        uart6_printf("%C", *data++);  // 使用 UART6 的打印函数
+    }
+}
+
+const UART_CmdHandler uart6_cmd[] = {
+    {0x01, set_password6},  // 命令 ID 可自定义
+};
+
+UART_Parser uart6_parser = {
+    .head = 0XAA,
+    .tail = 0XA7,
+    .cmds = uart6_cmd,
+    .cmd_count = sizeof(uart6_cmd)/sizeof(uart6_cmd[0]),
+    .state = PARSE_WAIT_HEADER
+};
+
+
+
+
+
+
 
 
 

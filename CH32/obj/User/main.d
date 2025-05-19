@@ -39,7 +39,8 @@ User/main.o: ../User/main.c D:\project\CH32\repository\CH32\BSP/bsp.h \
  D:\project\CH32\repository\CH32\BSP/RTC.h \
  D:\project\CH32\repository\CH32\BSP/seg.h \
  D:\project\CH32\repository\CH32\BSP/finger.h \
- D:\project\CH32\repository\CH32\BSP/parse.h
+ D:\project\CH32\repository\CH32\BSP/parse.h \
+ D:\project\CH32\repository\CH32\BSP/as608.h
 
 D:\project\CH32\repository\CH32\BSP/bsp.h:
 
@@ -124,3 +125,5 @@ D:\project\CH32\repository\CH32\BSP/seg.h:
 D:\project\CH32\repository\CH32\BSP/finger.h:
 
 D:\project\CH32\repository\CH32\BSP/parse.h:
+
+D:\project\CH32\repository\CH32\BSP/as608.h:

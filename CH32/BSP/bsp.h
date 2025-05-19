@@ -21,6 +21,9 @@
 #include "seg.h"
 #include "finger.h"
 #include  "parse.h"
+#include "as608.h"
+
+
 extern struct tm rtc_time;
 extern uint8_t password[10];
 extern time_t time_count;

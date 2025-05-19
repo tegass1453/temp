@@ -18,7 +18,7 @@ uint8_t ESP8266_Init(void)
     uart4_printf("AT+MQTTSUB=0,\"$sys/%s/%s/thing/property/set\",1\r\n",UserName,ClientId);
     Delay_Ms(5000);
     uart4_printf("AT+MQTTSUB=0,\"$sys/%s/%s/thing/property/post\",1\r\n",UserName,ClientId);
-    Delay_Ms(5000);
+    Delay_Ms(1000);
 
     return 1;
 }

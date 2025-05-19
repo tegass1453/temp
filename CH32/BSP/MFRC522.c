@@ -19,6 +19,10 @@
 #define timeout(time_old,freq) (((TIM2_GetTick()>=time_old+freq)?1:0)&&(time_old=TIM2_GetTick()||1))
 #define Timeout(time_old,freq) (!timeout(time_old,freq))
 
+
+#define  MFRC522_FLAG_ADD 0X01
+uint8_t MFRC522_flag;
+
 void MFRC522_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
@@ -635,18 +639,29 @@ void MFRC522_Proc(void)
      }
 
      int8_t num=MFRC522_find_card(&temp_card);
-     if(num!=-1)
+     /*读取卡片*/
+     if(num!=-1)//识别到卡片
      {
-       printf("第%d号卡，类型:%u%u,uid:0x%x",num,card_arr[num].type[0],card_arr[num].type[1],uchar_to_uint(card_arr[num].id,4));
+         /*此处增加解析*/
+
+
+
+
      }
-     else {
-         MFRC522_add_card(&temp_card);
+     else //未保存此卡片
+    {
+         if(MFRC522_flag&MFRC522_FLAG_ADD)
+         {
+             MFRC522_flag&=~MFRC522_FLAG_ADD;
+             MFRC522_add_card(&temp_card);
+         }
     }
 
 
-      MFRC522_Halt();
 
-     printf("\r\n");
+
+
+      MFRC522_Halt();
 
 }
 

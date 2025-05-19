@@ -10,6 +10,7 @@ C_SRCS += \
 ../BSP/RTC.c \
 ../BSP/Relay.c \
 ../BSP/SD.c \
+../BSP/as608.c \
 ../BSP/finger.c \
 ../BSP/parse.c \
 ../BSP/ringbuffer.c \
@@ -24,6 +25,7 @@ OBJS += \
 ./BSP/RTC.o \
 ./BSP/Relay.o \
 ./BSP/SD.o \
+./BSP/as608.o \
 ./BSP/finger.o \
 ./BSP/parse.o \
 ./BSP/ringbuffer.o \
@@ -38,6 +40,7 @@ C_DEPS += \
 ./BSP/RTC.d \
 ./BSP/Relay.d \
 ./BSP/SD.d \
+./BSP/as608.d \
 ./BSP/finger.d \
 ./BSP/parse.d \
 ./BSP/ringbuffer.d \
