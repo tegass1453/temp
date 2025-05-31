@@ -60,34 +60,6 @@ UART_Parser uart4_parser = {
     .state = PARSE_WAIT_HEADER
 };
 
-/*--------------------- UART6 配置 ---------------------*/
-void set_password6(uint8_t* data, uint8_t data_len) {
-    while(data_len--) {
-        uart6_printf("%C", *data++);  // 使用 UART6 的打印函数
-    }
-}
-
-const UART_CmdHandler uart6_cmd[] = {
-    {0x01, set_password6},  // 命令 ID 可自定义
-};
-
-UART_Parser uart6_parser = {
-    .head = 0XAA,
-    .tail = 0XA7,
-    .cmds = uart6_cmd,
-    .cmd_count = sizeof(uart6_cmd)/sizeof(uart6_cmd[0]),
-    .state = PARSE_WAIT_HEADER
-};
-
-
-
-
-
-
-
-
-
-
 
 
 // 初始化解析器
