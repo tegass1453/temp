@@ -20,6 +20,9 @@ void USART4_DMA_SendBuff(uint8_t *buf, uint8_t len);
 void uart4_printf(const uint8_t *format, ...);
 void UART4_IRQHandler(void);
 
+
+#define UART6_RX_BUFFER_SIZE 1024
+#define UART6_TX_BUFFER_SIZE 64
 void UART6_Init(uint32_t baudrate);
 void UART6_DMA_SendBuff(uint8_t *buf, uint8_t len);
 void uart6_printf(const char *format, ...);

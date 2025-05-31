@@ -548,8 +548,9 @@ void uart4_printf(const uint8_t *format, ...)
 
 
 
-#define UART6_RX_BUFFER_SIZE 256
-#define UART6_TX_BUFFER_SIZE 256
+
+
+uint8_t uart6_rb[UART6_RX_BUFFER_SIZE] = {0};
 
 uint8_t uart6_rx_buffer[UART6_RX_BUFFER_SIZE];
 uint8_t uart6_tx_buffer[UART6_TX_BUFFER_SIZE];
@@ -748,12 +749,18 @@ void uart_proc(void)
 
        }
     if (uart6_flag & USER_UART_PROC)
-       {
-           uart6_flag &= ~USER_UART_PROC;
+    {
+        uart6_flag &= ~USER_UART_PROC;
 
-           uint8_t uart6_rb[UART6_RX_BUFFER_SIZE] = {0};
-           len=ringbuffer_read(&uart6_ringbuffer, uart6_rb, uart6_ringbuffer.itemCount);
+        uint8_t len = ringbuffer_read(&uart6_ringbuffer, uart6_rb, uart6_ringbuffer.itemCount);
 
-           Parser_Process(&uart6_parser,uart6_rb,len);
-       }
+        //  直接调用库中函数处理AS608数据
+
+        as608_Process(uart6_rb,len);
+        // 清空缓冲区（避免残留数据影响后续判断）
+        memset(uart6_rb, 0, UART6_RX_BUFFER_SIZE);
+    }
 }
+
+
+
