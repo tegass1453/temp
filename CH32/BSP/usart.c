@@ -717,11 +717,12 @@ void uart_proc(void)
 
 
         uint8_t uart2_rb[UART2_RX_BUFFER_SIZE] = {0};
-        len=ringbuffer_read(&uart2_ringbuffer, uart2_rb, MAX_DATA_LEN+3); // 读取环形缓冲区数据
+        len=ringbuffer_read(&uart2_ringbuffer, uart2_rb,uart2_ringbuffer.itemCount); // 读取环形缓冲区数
+
 
         /* 数据解析区域(需用户完善) */
         // 示例: 处理uart2_rb中的数据...
-        Parser_Process(&uart2_parser,uart2_rb,len);
+
 
 
     }
@@ -756,10 +757,16 @@ void uart_proc(void)
 
         //  直接调用库中函数处理AS608数据
 
-        as608_Process(uart6_rb,len);
+        //as608_Process(uart6_rb,len);
         // 清空缓冲区（避免残留数据影响后续判断）
+
+        USART2_DMA_SendBuff(uart6_rb,len);
+
+
+
         memset(uart6_rb, 0, UART6_RX_BUFFER_SIZE);
     }
+
 }
 
 

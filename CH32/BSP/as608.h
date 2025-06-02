@@ -19,6 +19,7 @@ extern "C" {
 #define CMD_MATCH     0x03    // 比对
 #define CMD_DELETE    0x0C    // 删除
 
+
 // ======== 状态标志位定义，供主控程序读取和流程控制 ========
 #define AS608_FLAG_IDLE           0x0000  // 空闲状态
 #define AS608_FLAG_GENIMG_OK      0x0001  // 采集指纹图像成功
@@ -82,7 +83,7 @@ void     as608_delete_template(uint16_t page_id, uint16_t count);    // 删除模板
 
 int8_t   as608_Process(uint8_t* buf, uint16_t len);         // 主解析器
 void     as608_proc(void);                                 // 结果处理调度器
-
+void as608_movedata(uint16_t addr_old, uint16_t addr);
 
 
 

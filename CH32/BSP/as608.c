@@ -37,7 +37,7 @@ uint16_t as608_sum(uint8_t* data,uint8_t size)
 /*录入指纹*/
 void as608_input(void)
 {
-    static uint8_t buff[]={
+    uint8_t buff[]={
             0xEF,0X01,//包头
             0xFF,0XFF,0XFF,0XFF,//地址
             AS608_PKT_CMD,//标识：命令
@@ -54,7 +54,7 @@ void as608_input(void)
 /*生成特征*/
 void as608_feature(uint8_t buff_name)
 {
-    static uint8_t buff[]={
+   uint8_t buff[]={
             0xEF,0X01,//包头
             0xFF,0XFF,0XFF,0XFF,//地址
             AS608_PKT_CMD,//标识：命令
@@ -73,7 +73,7 @@ void as608_feature(uint8_t buff_name)
 /* 精确比对 CharBuffer1 和 CharBuffer2 */
 void as608_match(void)
 {
-    static uint8_t buff[] = {
+     uint8_t buff[] = {
         0xEF, 0x01,                 // 包头
         0xFF, 0xFF, 0xFF, 0xFF,     // 地址
         AS608_PKT_CMD,             // 包标识（命令包）
@@ -89,7 +89,7 @@ void as608_match(void)
 // 合并 CharBuffer1 与 CharBuffer2 生成模板
 void as608_merge_feature(void)
 {
-    static uint8_t buff[] = {
+    uint8_t buff[] = {
         0xEF, 0x01,                 // 包头
         0xFF, 0xFF, 0xFF, 0xFF,     // 地址
         AS608_PKT_CMD,             // 包标识（命令包）
@@ -113,19 +113,19 @@ void as608_store_template(uint8_t buffer_id, uint16_t page_id)
         0x00, 0x06,                         // 包长度
         AS608_CMD_STORE,                   // 指令码：存储模板
         buffer_id,                         // 缓存区号（1或2）
-        (page_id >> 8) & 0xFF,             // 存储位置高字节
+        page_id >> 8,             // 存储位置高字节
         page_id,                    // 存储位置低字节
         0x00, 0x00                          // 校验和（后续计算）
     };
 
     // 计算校验和（从包标识符 0x01 开始到 page_id 低字节为止）
     uint16_t sum = 0;
-    for (int i = 6; i <= 11; i++) {
+    for (int i = 6; i <= 12; i++) {
         sum += buff[i];
     }
 
-    buff[12] = (sum >> 8) & 0xFF;  // 校验和高字节
-    buff[13] = sum & 0xFF;         // 校验和低字节
+    buff[13] = (sum >> 8) & 0xFF;  // 校验和高字节
+    buff[14] = sum & 0xFF;         // 校验和低字节
 
     as608_send(buff, sizeof(buff));
     as608_last_cmd=CMD_STORE;
@@ -151,12 +151,12 @@ void as608_search(uint8_t buffer_id, uint16_t start_page, uint16_t page_num)
 
     // 计算校验和：从包标识（0x01）开始累加到 page_num 低位
     uint16_t sum = 0;
-    for (int i = 6; i <= 13; i++) {
+    for (int i = 6; i <= 14; i++) {
         sum += buff[i];
     }
 
-    buff[14] = sum >> 8;
-    buff[15] = sum ;
+    buff[15] = sum >> 8;
+    buff[16] = sum ;
 
     as608_send(buff, sizeof(buff));
     as608_last_cmd=CMD_SEARCH;
@@ -200,6 +200,7 @@ int8_t as608_Process(uint8_t* buf, uint16_t len)
     uint16_t pack_len = 0;        // 数据包声明长度
     uint8_t buff[32] = {0};       // 有效数据缓冲
     uint16_t sum = 0;             // 校验和
+    uint16_t recv_sum = 0;
 
     // ----------- 校验包头（0xEF 0x01）-----------
     for (int i = 0; i < 2; ++i) {
@@ -209,7 +210,7 @@ int8_t as608_Process(uint8_t* buf, uint16_t len)
 
     // ----------- 校验模块地址（默认全FF）-----------
     for (int i = 0; i < 4; ++i) {
-        if (buf[i+2] != as608_addr[i]) return -1;
+        if (buf[i + 2] != as608_addr[i]) return -1;
         if (--len == 0) return -1;
     }
 
@@ -220,12 +221,11 @@ int8_t as608_Process(uint8_t* buf, uint16_t len)
     // ----------- 读取数据包长度 -----------
     pack_len = ((uint16_t)buf[7] << 8) | buf[8];
     len -= 2;
-    if (len == 0) return -1;
-    if (len < pack_len) return -1;
+    if (len == 0 || len < pack_len) return -1;
 
     // ----------- 拷贝有效数据段（确认码+内容+校验和）-----------
     for (int i = 9; i < pack_len + 9; ++i) {
-        buff[i-9] = buf[i];
+        buff[i - 9] = buf[i];
     }
 
     // ----------- 校验和校验 -----------
@@ -233,64 +233,125 @@ int8_t as608_Process(uint8_t* buf, uint16_t len)
     for (int i = 6; i < 6 + pack_len; ++i) {
         sum += buf[i];
     }
-    uint16_t recv_sum = ((uint16_t)buf[9 + pack_len - 2] << 8) | buf[9 + pack_len - 1];
+    recv_sum = ((uint16_t)buf[9 + pack_len - 2] << 8) | buf[9 + pack_len - 1];
     if (sum != recv_sum) return -2;
 
-    // ----------- 联合“上一次指令”与本次确认码解析操作 -----------
-
-    switch(as608_last_cmd)
+    // ----------- 根据上次命令进行指令确认码解析 -----------
+    switch (as608_last_cmd)
     {
-        case CMD_GENIMG: // 采集指纹
-            if(buff[0]==0x00)      as608_flag = AS608_FLAG_GENIMG_OK;
-            else if(buff[0]==0x02) as608_flag = AS608_FLAG_NO_FINGER;
-            else                   as608_flag = AS608_FLAG_FAIL;
-            break;
-        case CMD_IMG2TZ1: // 特征1提取
-            if(buff[0]==0x00)      as608_flag = AS608_FLAG_IMG2TZ1_OK;
-            else                   as608_flag = AS608_FLAG_FAIL;
-            break;
-        case CMD_IMG2TZ2: // 特征2提取
-            if(buff[0]==0x00)      as608_flag = AS608_FLAG_IMG2TZ2_OK;
-            else                   as608_flag = AS608_FLAG_FAIL;
-            break;
-        case CMD_REGMODEL: // 合成模板
-            if(buff[0]==0x00)      as608_flag = AS608_FLAG_REGMODEL_OK;
-            else                   as608_flag = AS608_FLAG_FAIL;
-            break;
-        case CMD_STORE: // 存储模板
-            if(buff[0]==0x00)      as608_flag = AS608_FLAG_STORE_OK;
-            else                   as608_flag = AS608_FLAG_FAIL;
-            break;
-        case CMD_SEARCH: // 搜索指纹
-            if(buff[0]==0x00 && pack_len>=5) {
-                as608_flag = AS608_FLAG_SEARCH_OK;
-                as608_matched_page_id = ((uint16_t)buff[1]<<8)|buff[2];
-                as608_matched_score   = ((uint16_t)buff[3]<<8)|buff[4];
-            } else if(buff[0]==0x09) {
-                as608_flag = AS608_FLAG_NOT_FOUND;
-            } else {
-                as608_flag = AS608_FLAG_FAIL;
+        case CMD_GENIMG: // 采集图像
+            if (buff[0] == 0x00)
+                as608_flag |= AS608_FLAG_GENIMG_OK;
+            else if (buff[0] == 0x02)
+                as608_flag |= AS608_FLAG_NO_FINGER;
+            else {
+                as608_flag |= AS608_FLAG_FAIL;
             }
             break;
-        case CMD_MATCH: // 比对
-            if(buff[0]==0x00 || buff[0]==0x08)
-                as608_flag = AS608_FLAG_MATCH_OK;
-            else if(buff[0]==0x0C)
-                as608_flag = AS608_FLAG_MATCH_FAIL;
+
+        case CMD_IMG2TZ1: // 提取特征1
+            if (buff[0] == 0x00)
+                as608_flag |= AS608_FLAG_IMG2TZ1_OK;
             else
-                as608_flag = AS608_FLAG_FAIL;
+                as608_flag |= AS608_FLAG_FAIL;
             break;
+
+        case CMD_IMG2TZ2: // 提取特征2
+            if (buff[0] == 0x00)
+                as608_flag |= AS608_FLAG_IMG2TZ2_OK;
+            else
+                as608_flag |= AS608_FLAG_FAIL;
+            break;
+
+        case CMD_REGMODEL: // 合并特征
+            if (buff[0] == 0x00)
+                as608_flag |= AS608_FLAG_REGMODEL_OK;
+            else
+                as608_flag |= AS608_FLAG_FAIL;
+            break;
+
+        case CMD_STORE: // 存储模板
+            if (buff[0] == 0x00)
+                as608_flag |= AS608_FLAG_STORE_OK;
+            else
+                as608_flag |= AS608_FLAG_FAIL;
+            break;
+
+        case CMD_SEARCH: // 搜索模板
+            if (buff[0] == 0x00 && pack_len >= 5) {
+                as608_flag |= AS608_FLAG_SEARCH_OK;
+                as608_matched_page_id = ((uint16_t)buff[1] << 8) | buff[2];
+                as608_matched_score   = ((uint16_t)buff[3] << 8) | buff[4];
+            }
+            else if (buff[0] == 0x09) {
+                as608_flag |= AS608_FLAG_NOT_FOUND;
+            }
+            else {
+                as608_flag |= AS608_FLAG_FAIL;
+            }
+            break;
+
+        case CMD_MATCH: // 比对特征
+            if (buff[0] == 0x00 || buff[0] == 0x08)
+                as608_flag |= AS608_FLAG_MATCH_OK;
+            else if (buff[0] == 0x0C)
+                as608_flag |= AS608_FLAG_MATCH_FAIL;
+            else
+                as608_flag |= AS608_FLAG_FAIL;
+            break;
+
         case CMD_DELETE: // 删除模板
-            if(buff[0]==0x00)      as608_flag = AS608_FLAG_DELETE_OK;
-            else                   as608_flag = AS608_FLAG_FAIL;
+            if (buff[0] == 0x00)
+                as608_flag |= AS608_FLAG_DELETE_OK;
+            else
+                as608_flag |= AS608_FLAG_FAIL;
             break;
-        default: // 未知/未跟踪指令
-            as608_flag = AS608_FLAG_FAIL;
+
+        default: // 未知指令
+            as608_flag |= AS608_FLAG_FAIL;
             break;
     }
-    // as608_flag、as608_matched_page_id、as608_matched_score供主控逻辑随时读取
+
     return 0;
 }
+
+
+void as608_movedata(uint16_t addr_old, uint16_t addr)
+{
+    uint8_t buff[] = {
+        0xEF, 0x01,                   // 包头
+        0xFF, 0xFF, 0xFF, 0xFF,       // 模块地址
+        AS608_PKT_CMD,               // 命令包标识
+        0x00, 0x06,                  // 包长度：0x06 = 指令+参数+校验(共6字节)
+        AS608_CMD_LOAD_CHAR,         // 指令码：0x07 LoadChar
+        0x02,                        // Buffer ID = 2（CharBuffer2）
+        (addr_old >> 8) & 0xFF,      // PageID 高字节
+        addr_old & 0xFF,             // PageID 低字节
+        0x00, 0x00                   // 校验和（后续填写）
+    };
+
+    // 计算校验和（从指令标识开始，到 addr_old 低字节）
+    uint16_t sum = 0;
+    for (int i = 6; i <= 11; i++) {
+        sum += buff[i];
+    }
+
+    buff[12] = (sum >> 8) & 0xFF;   // 校验和高位
+    buff[13] = sum & 0xFF;          // 校验和低位
+
+    // 发送加载指令
+    as608_send(buff, sizeof(buff));
+
+    Delay_Ms(2); // 适当等待加载完成
+
+    // 存储至目标地址
+    as608_store_template(0x02, addr);
+}
+
+
+
+
+
 
 void as608_proc(void)
 {

@@ -46,20 +46,24 @@ int main(void)
 	USART_Printf_Init(115200);	
 	RTC_Init(40000-1);
 	RTC_SetTime(&rtc_time);
+
 	printf("SystemClk:%d\r\n",SystemCoreClock);
 	printf( "ChipID:%08x\r\n", DBGMCU_GetCHIPID() );
 	printf("This is printf example\r\n");
-	USART2_Init(115200);
+
     MFRC522_Init();
     TIM2_init();
+    USART2_Init(115200);
+    USART3_Init(115200);
     USART4_Init(115200);
     UART6_Init(57600);
 
     schedule_init();
 
-
   while (1)
   {
+
+
 
       schedule_proc();
   }
